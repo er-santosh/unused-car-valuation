@@ -1,3 +1,6 @@
+import { AuthGuard } from './../guards/auth.guard';
+import { User } from './user.entity';
+import { AuthService } from './auth.service';
 import { UserDto } from './dtos/user.dto';
 import { Serialize } from './../interceptors/serialize.interceptor';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -13,16 +16,43 @@ import {
   Patch,
   Post,
   Query,
-  UseInterceptors,
+  Session,
+  UseGuards,
 } from '@nestjs/common';
+import { CurrentUser } from './decorators/current-user.decorator';
 
 @Controller('auth')
 @Serialize(UserDto) //serialize all routes
+//@UseGuards(AuthGuard) //controller guard
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService,
+  ) {}
+
   @Post('/signup')
-  createUser(@Body() body: CreateUserDto) {
-    this.usersService.create(body.email, body.password);
+  async createUser(@Body() body: CreateUserDto, @Session() session: any) {
+    const user = await this.authService.signup(body.email, body.password);
+    session.userId = user.id;
+  }
+
+  @Post('/signin')
+  async signinUser(@Body() body: CreateUserDto, @Session() session: any) {
+    const user = await this.authService.signin(body.email, body.password);
+    session.userId = user.id;
+    return user;
+  }
+
+  @Get('/user')
+  @UseGuards(AuthGuard)
+  authUser(@CurrentUser() user: User) {
+    return user;
+  }
+
+  @Post('/signout')
+  @UseGuards(AuthGuard) //handler guard
+  async signoutUser(@Session() session: any) {
+    session.userId = null;
   }
 
   // @Serialize(UserDto) //route based serializer
