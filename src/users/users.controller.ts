@@ -1,3 +1,5 @@
+import { UserDto } from './dtos/user.dto';
+import { Serialize } from './../interceptors/serialize.interceptor';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -11,9 +13,11 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 
 @Controller('auth')
+@Serialize(UserDto) //serialize all routes
 export class UsersController {
   constructor(private usersService: UsersService) {}
   @Post('/signup')
@@ -21,6 +25,7 @@ export class UsersController {
     this.usersService.create(body.email, body.password);
   }
 
+  // @Serialize(UserDto) //route based serializer
   @Get('/:id')
   findUser(@Param('id') id: string) {
     return this.usersService.findOneById(parseInt(id));
