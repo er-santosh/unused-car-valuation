@@ -16,6 +16,10 @@ export class UsersService {
     return this.repo.save(user);
   }
 
+  listUsers() {
+    return this.repo.find();
+  }
+
   findOneById(id: number) {
     if (!id) return null;
     return this.repo.findOneBy({ id });
@@ -40,6 +44,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
+
     return this.repo.remove(user);
   }
 }

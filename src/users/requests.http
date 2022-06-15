@@ -3,7 +3,7 @@ POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-    "email":"test@test123.com",
+    "email":"test@test1234.com",
     "password":"password"
 }
 
@@ -12,7 +12,7 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-    "email":"test@test123.com",
+    "email":"test@info.com",
     "password":"password"
 }
 
@@ -31,7 +31,7 @@ GET http://localhost:3000/auth
 GET http://localhost:3000/auth/2
 
 ### Find user by email
-GET http://localhost:3000/auth?email=test@test1.com
+GET http://localhost:3000/auth?email=test@test1234.com
 
 
 ### delete user
