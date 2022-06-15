@@ -30,4 +30,4 @@ Content-Type: application/json
 
 ### get estimate value
 
-GET http://localhost:3000/reports/get-estimate?make=dfdf&model=asd&year=2020&mileage=22&lng=0&lat=0
+GET http://localhost:3000/reports/get-estimate?make=HONDA&model=AWQ&year=2000&mileage=100&lng=0&lat=0
